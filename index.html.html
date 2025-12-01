@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>USM-Shopping.com</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#f4f4f4;}
+header{background:#222;color:#fff;padding:12px 15px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+.logo{font-size:22px;font-weight:bold;}
+nav ul{list-style:none;display:flex;gap:25px;margin:0;padding:0;align-items:center;}
+nav a{color:white;text-decoration:none;font-size:17px;cursor:pointer;}
+.search-box{display:flex;flex:1;max-width:350px;margin-left:20px;}
+.search-box input{flex:1;padding:8px;border-radius:6px;border:1px solid #aaa;}
+/* make product area scrollable */
+#productList.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding:12px;max-height:calc(100vh - 240px);overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.product{background:white;border-radius:6px;padding:10px;text-align:center;box-shadow:0 2px 4px #0002;cursor:pointer;}
+.product img{width:100%;height:140px;object-fit:cover;border-radius:6px;}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0007;justify-content:center;align-items:center;padding:20px;z-index:2000;}
+.popup-box{background:white;width:95%;max-width:500px;border-radius:10px;padding:20px;box-shadow:0 0 10px #0009;}
+.popup-box img{width:100%;height:250px;object-fit:cover;border-radius:10px;}
+.modal-buttons{margin-top:20px;display:flex;gap:15px;}
+.modal-buttons button{flex:1;padding:12px;border:none;border-radius:8px;font-size:16px;cursor:pointer;}
+.order-btn{background:#0a7d25;color:white;}
+.cancel-btn{background:#c00000;color:white;}
+footer{background:#111;color:white;padding:40px 20px;margin-top:30px;}
+.footer-section{max-width:1000px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.ceo-card{background:#222;padding:20px;border-radius:8px;box-shadow:0 0 6px #0005;}
+.ceo-card img{padding:43px;width:50%;border-radius:59px;height:160px;object-fit:cover;}
+/* optional: nicer scrollbar for WebKit */
+#productList::-webkit-scrollbar{width:10px}
+#productList::-webkit-scrollbar-thumb{background:#cfcfcf;border-radius:6px}
+</style>
+</head>
+<body>
+<header>
+<div class='logo'>USM-Shop</div>
+<div class='search-box'><input id='search' placeholder='Search...' oninput='searchProducts()'></div>
+<nav>
+<ul>
+<li><a>Home</a></li>
+<li><a>Products</a></li>
+<li><a onclick='openLogin()'>User Login</a></li>
+<li><a onclick='openSignup()'>Create Account</a></li>
+</ul>
+</nav>
+</header>
+
+<div id='productList' class='products' aria-label='Product list'></div>
+
+<div id='popup' class='modal'>
+<div class='popup-box'>
+<span onclick='closePopup()' style='float:right;font-size:25px;cursor:pointer;'>&times;</span>
+<img id='popupImg'>
+<h2 id='popupName'></h2>
+<p id='popupDesc' style='font-size:14px;line-height:1.6;color:#444;'></p>
+<div class='modal-buttons'>
+<button class='order-btn' onclick='openOrderPopup()'>Order Now</button>
+<button class='cancel-btn' onclick='closePopup()'>Cancel Order</button>
+</div>
+</div>
+</div>
+
+<div id="loginModal" class="modal">
+<div class='popup-box'>
+<span onclick="closeLogin()" style="float:right;font-size:25px;cursor:pointer;">&times;</span>
+<h2 id='loginTitle'>User Login Panel</h2>
+<input id="loginEmail" placeholder="Enter Your Email" style="width:100%;padding:10px;margin:8px 0;border:1px solid #aaa;border-radius:6px;">
+<input id="loginPass" placeholder="Enter Password" type="password" style="width:100%;padding:10px;margin:8px 0;border:1px solid #aaa;border-radius:6px;">
+<button onclick="doLogin()" class="order-btn" style="width:100%;margin-top:10px;">Login</button>
+</div>
+</div>
+
+<div id="signupModal" class="modal">
+<div class='popup-box'>
+<span onclick="closeSignup()" style="float:right;font-size:25px;cursor:pointer;">&times;</span>
+<h2 id='signupTitle'>Register New User</h2>
+<input id="signName" placeholder="Full Name" style="width:100%;padding:10px;margin:8px 0;border:1px solid #aaa;border-radius:6px;">
+<input id="signEmail" placeholder="Email Address" style="width:100%;padding:10px;margin:8px 0;border:1px solid #aaa;border-radius:6px;">
+<input id="signPass" placeholder="Create Password" type="password" style="width:100%;padding:10px;margin:8px 0;border:1px solid #aaa;border-radius:6px;">
+<button onclick="doSignup()" class="order-btn" style="width:100%;margin-top:10px;">Create Account</button>
+</div>
+</div>
+
+<footer>
+<h2 style='text-align:center;margin-bottom:25px;'>Our Leadership Team</h2>
+<div class='footer-section'>
+<div class='ceo-card'><img src='images/rakib.jpg'><h3>CEO — Rakib Hasan</h3><p>Founder & strategic leader of USM.</p></div>
+<div class='ceo-card'><img src='images/rakib.jpg'><h3>CEO — Rakib Hasan</h3><p>Manages design & smooth user experience.</p></div>
+<div class='ceo-card'><img src='images/rakib.jpg'><h3>CEO — Rakib Hasan</h3><p>Handles backend technology.</p></div>
+</div>
+<p style='text-align:center;margin-top:30px;font-size:14px;opacity:0.7;'>© 2025 USM — All rights reserved.</p>
+
+<!-- Order Location Popup -->
+<div id='orderPopup' class='modal'>
+  <div class='popup-box' style="background:#fff; border-radius:20px; padding:25px; box-shadow:0 5px 20px #0003; animation:pop .3s ease;">
+    <span onclick="closeOrderPopup()" style="float:right;font-size:28px;cursor:pointer;color:#444;">&times;</span>
+    <h2 style='text-align:center;margin-bottom:10px;font-weight:800;font-size:24px;color:#0a7d25;'>📍 Delivery Location</h2>
+    <p style='text-align:center;color:#555;margin-bottom:20px;font-size:15px;'>Select your exact delivery point on the Google map</p>
+
+    <div style='border-radius:15px;overflow:hidden;box-shadow:0 0 10px #0002;margin-bottom:15px;'>
+      <iframe src="https://www.google.com/maps" style="width:100%;height:300px;border:0;"></iframe>
+    </div>
+
+    <button class='order-btn' style='margin-top:5px;width:100%;border-radius:12px;font-size:18px;padding:12px;' onclick='openPaymentPopup()'>Continue ➜</button>
+  </div>
+</div>
+
+
+<!-- Payment Popup -->
+<div id='paymentPopup' class='modal'>
+  <div class='popup-box'>
+    <span onclick="closePaymentPopup()" style="float:right;font-size:25px;cursor:pointer;">&times;</span>
+    <h2 style='text-align:center;margin-bottom:15px;'>Payment Method</h2>
+    <p style='text-align:center;color:#555;margin-bottom:15px;'>Select a payment option</p>
+
+    <div style='display:flex;gap:10px;margin-bottom:15px;'>
+      <button onclick="selectPayment('card')" id='cardBtn' style='flex:1;padding:12px;border-radius:10px;border:2px solid #0a7d25;background:white;font-weight:bold;'>💳 Bank Card</button>
+      <button onclick="selectPayment('cod')" id='codBtn' style='flex:1;padding:12px;border-radius:10px;border:2px solid #aaa;background:white;font-weight:bold;'>🚚 Cash on Delivery</button>
+    </div>
+
+    <div id='cardSection' style='display:none;'>
+      <input placeholder='Card Number' style='width:100%;padding:12px;margin:8px 0;border:1px solid #aaa;border-radius:6px;'>
+      <div style='display:flex;gap:4%'>
+        <input placeholder='MM/YY' style='width:48%;padding:12px;margin:8px 0;border:1px solid #aaa;border-radius:6px;'>
+        <input placeholder='CVV' style='width:48%;padding:12px;margin:8px 0;border:1px solid #aaa;border-radius:6px;'>
+      </div>
+    </div>
+
+    <div id='codSection' style='display:none;text-align:center;margin-top:10px;font-size:16px;color:#444;'>
+      <p>✔ You selected <b>Cash on Delivery</b></p>
+      <p>Pay when the product arrives at your door.</p>
+    </div>
+
+    <button onclick='openSuccessPopup()' style="margin-top:20px;width:100%;padding:14px;border:none;border-radius:14px;font-size:18px;font-weight:700;background:linear-gradient(135deg,#0fb84a,#0a7d25);color:white;box-shadow:0 4px 10px #0a7d2544;transition:.2s;cursor:pointer;">✨ Confirm Payment</button>
+  </div>
+</div>
+
+
+<!-- Payment Success Popup -->
+<div id='successPopup' class='modal'>
+  <div class='popup-box' style="text-align:center;padding:30px;border-radius:18px;animation:pop .3s ease;">
+    <h2 style='color:#0a7d25;font-size:26px;font-weight:800;'>✅ Payment Successful</h2>
+    <p style='color:#444;font-size:16px;margin:15px 0;'>Your order has been confirmed! Thank you for shopping.</p>
+    <div style="margin-top:18px;display:flex;gap:10px;">
+      <button onclick="returnToMain()" style="flex:1;padding:12px;border:none;border-radius:12px;font-size:16px;font-weight:700;background:#0a7d25;color:white;cursor:pointer;">🛍️ Back to Shop</button>
+      <button onclick="closeSuccessPopup()" style="flex:1;padding:12px;border:none;border-radius:12px;font-size:16px;font-weight:700;background:#aaa;color:white;cursor:pointer;">Close</button>
+    </div>
+  </div>
+</div>
+
+</footer>
+
+<script>
+let products=[];
+for (let i = 1; i <= 30; i++) {
+    const descriptions = [
+`Product 1 is designed with advanced craftsmanship, offering durability, comfort, and a premium finish. Its structure ensures stable performance under long-term use, making it ideal for daily activities. With lightweight handling and modern aesthetics, it provides both functionality and elegance. This model guarantees smooth operation and reliability throughout every task.` ,
+`Product 2 features a refined build focused on strength and user comfort. It delivers exceptional performance even with continuous usage. The structured design ensures balanced weight distribution for easy handling. Suitable for indoor and outdoor usage, it supports diverse user needs. A dependable choice for customers seeking long-lasting value.` ,
+`Product 3 is built to offer modern usability, featuring high-grade materials and a sleek finish. It performs consistently regardless of environmental conditions. Its ergonomic layout improves handling comfort significantly. Designed for practical, everyday use, it fits seamlessly into any lifestyle. Perfect for customers looking for enhanced productivity.` ,
+`Product 4 emphasizes durability and long-term performance. Crafted with precision, it offers stable operation without quality degradation. Its comfortable grip and user-friendly build enhance experience. The premium design adds a visually appealing touch. Ideal for multi-purpose usage across various environments.` ,
+`Product 5 delivers enhanced reliability thanks to its robust construction. It remains comfortable to use for extended periods. Its modern build ensures smooth and efficient daily operations. The lightweight feel makes it easy to manage. A strong option for performance-conscious users.` ,
+`Product 6 is engineered for customers seeking comfort and long-term durability. Its balanced build ensures smooth operations even under load. With stylish aesthetics, it blends functionality with elegance. Easily adaptable for multiple usage scenarios. Built to maintain consistent performance.` ,
+`Product 7 offers exceptional endurance due to its premium components. The ergonomic design supports comfortable, practical use. It ensures smooth execution of routine tasks. Lightweight yet strong, providing excellent portability. Perfect for users who value stability and convenience.` ,
+`Product 8 combines modern design with high functionality. Its strong frame withstands prolonged usage. Handles comfortably in both indoor and outdoor setups. Smooth performance makes it highly versatile. A reliable partner for everyday tasks.` ,
+`Product 9 is created with advanced structural enhancements for long-term service life. Its comfortable feel improves user experience. Adaptable to many scenarios, offering flexibility. Smooth operations ensure efficiency in usage. Ideal for quality-focused customers.` ,
+`Product 10 features superior durability and comfort optimization. The lightweight build ensures easy maneuverability. Designed for daily usability with lasting performance. Premium finish adds aesthetic appeal. A top choice for long-term value.` ,
+`Product 11 uses upgraded materials for maximum endurance. Its modern design supports effective performance. Comfortable to hold and operate. Suitable for many types of daily activities. Provides reliability and user confidence.` ,
+`Product 12 is crafted to deliver smooth, effective operation. Its ergonomic shape aligns with natural handling. Built strong for extended use without fatigue. Blends stylish design with practical performance. A dependable solution for daily routines.` ,
+`Product 13 maintains excellent stability due to its reinforced frame. Offers long-lasting comfort during continuous use. Modern design enhances usability. Lightweight structure improves control. Great for users needing efficiency.` ,
+`Product 14 is optimized for comfort and day-long performance. Built with durable components for reliability. Maintains stability even with repeated use. Sleek design makes it visually appealing. Perfect for users seeking balanced functionality.` ,
+`Product 15 focuses on efficient daily operation. Strong build ensures reliability under stress. Easy-to-handle structure improves comfort. Stylish exterior boosts overall look. A strong performer for regular tasks.` ,
+`Product 16 is engineered with upgraded materials ensuring long-lasting quality. Comfortable grip supports prolonged usage. Smooth performance enhances productivity. Suitable for various environments. A great match for active users.` ,
+`Product 17 delivers refined stability through advanced construction. Lightweight body ensures ease of use. Reliable under heavy usage. Elegant design adds premium value. Perfect for routine or demanding tasks.` ,
+`Product 18 features strong build quality to resist wear. Soft-handling design enhances user comfort. Smooth operational flow increases efficiency. Suitable for multipurpose use. Offers unmatched long-term performance.` ,
+`Product 19 integrates modern engineering for superior endurance. Designed to reduce strain during use. Strong yet flexible structure ensures adaptability. Smooth operation ensures consistent output. An excellent daily-use companion.` ,
+`Product 20 is crafted with attention to durability and aesthetics. Provides superior comfort throughout handling. Multipurpose usability enhances value. Built to withstand long-term use. A trusted option for everyday performance.` ,
+`Product 21 stands out with its premium-quality finish and reliable performance. Comfortable for extended usage. Strong built-in structural stability ensures longevity. Modern design enhances appearance. Perfect for active daily use.` ,
+`Product 22 is developed to meet extended usage demands. Features strong components for resilient performance. Smooth, effortless operation. Lightweight for easy handling. A dependable tool for long-term users.` ,
+`Product 23 focuses on delivering enhanced comfort with ergonomic shaping. High-quality materials support durability. Performs efficiently in various environments. Stylish design adds uniqueness. Great for everyday workloads.` ,
+`Product 24 is designed for users needing long-term reliability. Feature-rich build increases overall value. Smooth to handle and easy to use. Strong exterior enhances resilience. Excellent for regular tasks.` ,
+`Product 25 incorporates durable craftsmanship and modern style. Comfortable grip promotes ease of use. Perfect for users demanding quality. High endurance ensures longevity. Supports efficient daily operations.` ,
+`Product 26 balances performance with comfort. Built to deliver stable, long-lasting results. Lightweight and practical for daily routines. Elegant finish boosts appeal. Great for multipurpose use.` ,
+`Product 27 ensures reliable functioning with strong design. Comfortable for long-term handling. Smooth performance in every task. Stylish structure adds value. Perfect for routine applications.` ,
+`Product 28 is crafted for consistent quality and durability. Designed with user comfort in mind. Operates smoothly and efficiently. Suitable for all-day use. A trusted choice for regular users.` ,
+`Product 29 combines ergonomic design with reinforced strength. Ensures balanced and smooth performance. Comfortable to use for extended periods. Modern aesthetics elevate the experience. Excellent long-term companion.` ,
+`Product 30 features a premium blend of durability and comfort. Easy to operate with stable performance. Built to last under regular pressure. Stylish and practical for all environments. A perfect pick for customers valuing quality.`
+];
+    let randomDesc = descriptions[Math.floor(Math.random() * descriptions.length)];
+
+    products.push({
+        id: i,
+        name: 'Product ' + i,
+        price: (50 + i * 7),
+        img: 'images/' + i + '.jpg',
+        desc: randomDesc
+    });
+}
+
+function renderProducts(){
+let box=document.getElementById('productList');
+box.innerHTML='';
+products.forEach(p=>{
+box.innerHTML+=`<div class='product' onclick='openPopup(${p.id})'>
+<img src='${p.img}' onerror="this.src='https://via.placeholder.com/150'">
+<h4>${p.name}</h4>
+<p>${p.price} SAR</p>
+</div>`;});}
+renderProducts();
+
+function searchProducts(){
+let t=document.getElementById('search').value.toLowerCase();
+let match=products.filter(p=>p.name.toLowerCase().includes(t));
+let other=products.filter(p=>!p.name.toLowerCase().includes(t));
+let ordered=[...match,...other];
+let box=document.getElementById('productList');
+box.innerHTML='';
+ordered.forEach(p=>{
+let show=p.name.toLowerCase().includes(t)||t==='';
+box.innerHTML+=`<div class='product' onclick='openPopup(${p.id})' style='display:${show?'block':'none'}'>
+<img src='${p.img}' onerror="this.src='https://via.placeholder.com/150'">
+<h4>${p.name}</h4>
+<p>${p.price} SAR</p>
+</div>`;});}
+
+function openPopup(id){
+let p=products.find(x=>x.id===id);
+document.getElementById('popupImg').src=p.img;
+document.getElementById('popupName').innerText=p.name;
+document.getElementById('popupDesc').innerText=p.desc;
+document.getElementById('popup').style.display='flex';}
+
+function closePopup(){document.getElementById('popup').style.display='none';}
+function openLogin(){document.getElementById('loginModal').style.display='flex';}
+function closeLogin(){document.getElementById('loginModal').style.display='none';}
+function openSignup(){document.getElementById('signupModal').style.display='flex';}
+function closeSignup(){document.getElementById('signupModal').style.display='none';}
+function openOrderPopup(){
+ document.getElementById('orderPopup').style.display='flex';
+}
+function closeOrderPopup(){
+ document.getElementById('orderPopup').style.display='none';
+}
+function openPaymentPopup(){
+ closeOrderPopup();
+ document.getElementById('paymentPopup').style.display='flex';
+}
+function closePaymentPopup(){
+ document.getElementById('paymentPopup').style.display='none';
+}
+function selectPayment(type){
+ let cardBtn=document.getElementById('cardBtn');
+ let codBtn=document.getElementById('codBtn');
+ let cardSec=document.getElementById('cardSection');
+ let codSec=document.getElementById('codSection');
+
+ if(type==='card'){
+   cardBtn.style.borderColor='#0a7d25';
+   codBtn.style.borderColor='#aaa';
+   cardSec.style.display='block';
+   codSec.style.display='none';
+ } else {
+   codBtn.style.borderColor='#0a7d25';
+   cardBtn.style.borderColor='#aaa';
+   cardSec.style.display='none';
+   codSec.style.display='block';
+ }
+}
+function openSuccessPopup(){
+ document.getElementById('successPopup').style.display='flex';
+ // close other modals to keep focus
+ closePopup();
+ closePaymentPopup();
+}
+function closeSuccessPopup(){ document.getElementById('successPopup').style.display='none'; }
+
+function closeAllModals(){
+  document.querySelectorAll('.modal').forEach(m=>m.style.display='none');
+  window.scrollTo({top:0,behavior:'smooth'});
+  const search=document.getElementById('search');
+  if(search) search.focus();
+}
+
+function returnToMain(){
+  // Hide any open modal and return user to main products view
+  closeAllModals();
+  renderProducts();
+}
+</script>
+</body>
+</html>
