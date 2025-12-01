@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile Dashboard — USM</title>
+  <style>
+    body{margin:0;font-family:sans-serif;background:#000000;color:#FFFFFF;}
+    header{background:#0A0A0A;color:#3B82F6;padding:18px 22px;font-size:24px;font-weight:700;letter-spacing:0.5px;}
+    .container{max-width:1100px;margin:auto;padding:25px;}
+
+    /* PROFILE CARD */
+    .profile-card{
+      background:#fff;padding:30px;border-radius:14px;
+      box-shadow:0 0 0 1px #000;border:2px solid #3B82F6;
+      display:flex;gap:25px;align-items:center;
+    }
+    .profile-card img{
+      width:130px;height:130px;border-radius:70px;object-fit:cover;
+      border:3px solid #000;
+    }
+    .profile-info h2{margin:0;font-size:26px;font-weight:800;color:#0A0A0A;}
+    .profile-info p{margin:6px 0;color:#444;font-size:15px;}
+
+    /* SECTION BOX */
+    .section{
+      background:#fff;margin-top:30px;padding:25px;
+      border-radius:14px;border:2px solid #3B82F6;
+    }
+    .section h3{
+      margin-top:0;font-size:22px;font-weight:700;color:#0A0A0A;
+      border-bottom:2px solid #3B82F6;padding-bottom:8px;
+    }
+
+    /* TABLE */
+    table{width:100%;border-collapse:collapse;margin-top:15px;}
+    table th,table td{
+      padding:12px;border-bottom:2px solid #3B82F6;text-align:left;
+    }
+    table th{background:#0A0A0A;color:#3B82F6;font-weight:700;font-size:15px;}
+
+    /* BUTTON */
+    .btn{
+      padding:12px 20px;border:2px solid #3B82F6;border-radius:10px;
+      font-size:15px;font-weight:700;background:#0A0A0A;color:#000000;
+      cursor:pointer;transition:.2s;
+    }
+    .btn:hover{background:white;color:#0A0A0A;}
+
+  </style>
+</head>
+<body>
+  <header>User Dashboard</header>
+  <div class="container" style="display:flex;gap:25px;">
+
+    <!-- LEFT SIDEBAR PROFILE -->
+    <div style="width:280px;background:#0A0A0A;padding:25px;border-radius:16px;box-shadow:0 0 0 2px #3B82F6;">
+      <div style="text-align:center;">
+        <img id="profile-img" src="https://via.placeholder.com/130" style="width:130px;height:130px;border-radius:70px;border:3px solid #3B82F6;object-fit:cover;">
+        <input type="file" id="upload" style="margin-top:10px;color:#FFFFFF">
+        <h2 style="color:#FFFFFF;margin-top:15px;font-size:22px;">Customer Name</h2>
+      </div>
+
+      <!-- SUB MENU -->
+      <div style="margin-top:40px;display:flex;flex-direction:column;gap:15px;">
+        <a class="menu" href="#orders" style="display:block;padding:12px 15px;background:#111;border:2px solid #3B82F6;border-radius:10px;color:#3B82F6;font-weight:700;text-decoration:none;">📦 My Orders</a>
+        <a class="menu" href="#track" style="display:block;padding:12px 15px;background:#111;border:2px solid #3B82F6;border-radius:10px;color:#3B82F6;font-weight:700;text-decoration:none;">🚚 Tracking</a>
+        <a class="menu" href="#cancel" style="display:block;padding:12px 15px;background:#111;border:2px solid #3B82F6;border-radius:10px;color:#3B82F6;font-weight:700;text-decoration:none;">❌ Cancel Order</a>
+        <a class="menu" href="#logout" style="display:block;padding:12px 15px;background:#111;border:2px solid #3B82F6;border-radius:10px;color:#3B82F6;font-weight:700;text-decoration:none;">🔓 Logout</a>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <div style="flex:1;">
+      <div id="orders" class="section" style="background:#000000;max-height:420px;overflow-y:auto;">
+        <h3 style="color:#FFFFFF;">My Orders</h3>
+        <table style="width:100%;border-collapse:collapse;background:#111;border:1px solid #333;">
+          <tr>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Serial</th>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Product Name</th>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Order Date</th>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Tracking Number</th>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">1</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Smart Watch</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">12 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10221</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">2</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Wireless Earbuds</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">15 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10222</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">3</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Power Bank</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">18 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10223</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">4</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Bluetooth Speaker</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">20 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10224</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">5</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Gaming Mouse</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">21 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10225</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">6</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">USB-C Cable</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">22 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10226</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">7</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Laptop Stand</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">23 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10227</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">8</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Portable SSD</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">24 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10228</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">9</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Keyboard</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">25 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10229</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">10</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Phone Holder</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">26 Feb 2025</td>
+            <td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">#TRK10230</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- TRACKING BOX -->
+      <div id="track-box" class="section" style="display:none;background:#000000;color:#FFFFFF;border:2px solid #3B82F6;border-radius:14px;padding:25px;">
+        <h3 style="color:#FFFFFF;">Tracking</h3>
+        <p style="color:#DDD;font-size:16px;">এখানে কাস্টমার তাদের অর্ডারের ট্র্যাকিং স্ট্যাটাস দেখতে পাবে।</p>
+      </div>
+
+      <!-- CANCEL BOX -->
+      <div id="cancel-box" class="section" style="display:none;background:#000000;color:#FFFFFF;border:2px solid #3B82F6;border-radius:14px;padding:25px;max-height:420px;overflow-y:auto;">
+        <h3 style="color:#FFFFFF;">Cancel Order</h3>
+        <table style="width:100%;border-collapse:collapse;background:#111;border:1px solid #333;margin-top:15px;">
+          <tr>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Serial</th>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Product Name</th>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Order Date</th>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Tracking Number</th>
+            <th style="padding:12px;border-bottom:1px solid #333;color:#00E5FF;text-align:left;">Status</th>
+          </tr>
+
+          <tr><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">1</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Smart Watch</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">12 Feb 2025</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">TRK-9911</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Cancelled</td></tr>
+          <tr><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">2</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Bluetooth Speaker</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">20 Feb 2025</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">TRK-8821</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Cancelled</td></tr>
+          <tr><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">3</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Phone Holder</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">26 Feb 2025</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">TRK-8871</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Cancelled</td></tr>
+
+          <tr><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">4</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Wireless Earbuds</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">01 Mar 2025</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">TRK-7721</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Cancelled</td></tr>
+          <tr><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">5</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Laptop Stand</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">03 Mar 2025</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">TRK-4521</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Cancelled</td></tr>
+          <tr><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">6</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">USB LED Light</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">05 Mar 2025</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">TRK-4429</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Cancelled</td></tr>
+          <tr><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">7</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Mini Tripod</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">09 Mar 2025</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">TRK-8854</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Cancelled</td></tr>
+          <tr><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">8</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Wireless Mouse</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">12 Mar 2025</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">TRK-1185</td><td style="padding:10px;border-bottom:1px solid #222;color:#DDD;">Cancelled</td></tr>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById('upload').onchange = function(e){
+      let img = document.getElementById('profile-img');
+      img.src = URL.createObjectURL(e.target.files[0]);
+    }
+  </script>
+  <script>
+    document.getElementById('upload').onchange = function(e){
+      let img = document.getElementById('profile-img');
+      img.src = URL.createObjectURL(e.target.files[0]);
+    }
+
+    // MENU CLICK HANDLER
+    const orders = document.getElementById('orders');
+    const track = document.getElementById('track-box');
+    const cancelBox = document.getElementById('cancel-box');
+
+    document.querySelector("a[href='#orders']").onclick = function(){
+      orders.style.display = 'block';
+      track.style.display = 'none';
+      cancelBox.style.display = 'none';
+    };
+
+    document.querySelector("a[href='#track']").onclick = function(){
+      orders.style.display = 'none';
+      track.style.display = 'block';
+      cancelBox.style.display = 'none';
+    };
+
+    document.querySelector("a[href='#cancel']").onclick = function(){
+      orders.style.display = 'none';
+      track.style.display = 'none';
+      cancelBox.style.display = 'block';
+    };
+  </script>
+</body>
+</html>
